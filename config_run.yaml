@@ -1,0 +1,87 @@
+# YAML configuration
+account: wrfruc
+verbose: False # Adds extra print statements
+
+# Location for running test cases
+rootdir: /scratch2/BMC/wrfruc/jensen/mpas_regional/ctrl/
+rundir: run
+date_as_dir: True # Use current date and time as directory name: rundir/yyyymmdd_hhmmss
+icsdir: &latest latest_run_ics
+mpasexedir: &exedir /scratch2/BMC/wrfruc/jensen/git-local/MPAS-Model-ML/
+mpasexefile: &exefile atmosphere_model
+
+# MPAS runtime files needed
+mpasfiles:
+
+   # Location of compiled MPAS code
+   mpasmodel:
+      action: link # link or copy
+      dir: *exedir
+      files:
+         - *exefile
+
+   # Location and names of runtime files
+   # Most of these files are: MPAS-Model/src/core_atmosphere/physics/physics_wrf/files/
+   # To get the aerosol file use: wget https://www2.mmm.ucar.edu/projects/mpas/QNWFA_QNIFA_SIGMA_MONTHLY.dat
+   runtime:
+      action: link # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/runtime/
+      files:
+         - QNWFA_QNIFA_SIGMA_MONTHLY.dat
+         - RRTMG_SW_DATA.DBL
+         - RRTMG_LW_DATA.DBL
+         - RRTMG_SW_DATA
+         - RRTMG_LW_DATA
+         - LANDUSE.TBL
+         - CCN_ACTIVATE_DATA
+         - VEGPARM.TBL
+         - SOILPARM.TBL
+         - OZONE_PLEV.TBL
+         - OZONE_LAT.TBL
+         - OZONE_DAT.TBL
+         - GENPARM.TBL
+         - CAM_AEROPT_DATA.DBL
+         - CAM_ABS_DATA.DBL
+
+   # Location of TEMPO MP lookup tables
+   tempo:
+      action: link # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/build_tables/
+      files:
+         - MP_TEMPO_freezeH2O_DATA.DBL
+         - MP_TEMPO_QRacrQS_DATA.DBL
+         - MP_TEMPO_QIautQS_DATA.DBL
+         - MP_TEMPO_HAILAWARE_QRacrQG_DATA.DBL
+
+   # Location of TEMPO MP lookup tables
+   case:
+      action: copy # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/case/wiw_regional/
+      files:
+         - ww.graph.info.part.1200
+
+   # Location of TEMPO MP lookup tables
+   namelist:
+      action: copy # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/case/wiw_regional/20230109/namelists/run/
+      files:
+         - namelist.atmosphere
+         - streams.atmosphere
+         - stream_list.atmosphere.diagnostics
+         - stream_list.atmosphere.output
+         - stream_list.atmosphere.surface
+         - run_atmosphere_model.sh
+
+   # Location of TEMPO MP lookup tables
+   ics:
+      action: link # link or copy
+      dir: *latest
+      files:
+         - ww.init.nc
+         - ww.lbc.2023-01-09_00.00.00.nc
+         - ww.lbc.2023-01-09_06.00.00.nc
+         - ww.lbc.2023-01-09_12.00.00.nc
+         - ww.lbc.2023-01-09_18.00.00.nc
+         - ww.lbc.2023-01-10_00.00.00.nc
+         - ww.lbc.2023-01-10_06.00.00.nc
+         - ww.lbc.2023-01-10_12.00.00.nc

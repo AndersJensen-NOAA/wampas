@@ -1,0 +1,36 @@
+# YAML configuration
+account: wrfruc
+verbose: False # Adds extra print statements
+
+# Location for running test cases
+rootdir: /scratch2/BMC/wrfruc/jensen/mpas_regional/ctrl/
+rundir: &latest latest_run_ics
+date_as_dir: True # Use current date and time as directory name: rundir/yyyymmdd_hhmmss
+
+# Check for files
+filecheck:
+
+  # Check for ICs
+   ics:
+      action: check
+      dir: *latest
+      files:
+         - ww.init.nc
+
+   icsnamelist:
+      action: backup
+      dir: *latest
+      files:
+         - namelist.init_atmosphere
+         - streams.init_atmosphere
+
+# MPAS runtime files needed
+mpasfiles:
+
+  # Case specific namelists, streams, control scripts
+   namelists:
+      action: copy # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/case/wiw_regional/20230109/namelists/lbcs/
+      files:
+         - namelist.init_atmosphere
+         - streams.init_atmosphere

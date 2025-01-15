@@ -1,0 +1,60 @@
+# YAML configuration
+account: wrfruc
+verbose: False # Adds extra print statements
+
+# Location for running test cases
+rootdir: /scratch2/BMC/wrfruc/jensen/mpas_regional/ctrl/
+rundir: ics
+date_as_dir: True # Use current date and time as directory name: rundir/yyyymmdd_hhmmss
+
+# MPAS runtime files needed
+mpasfiles:
+
+   # Location of compiled MPAS code
+   mpasmodel:
+      action: link # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/MPAS-Model-ML/
+      files:
+         - build_tables_tempo
+         - init_atmosphere_model
+
+   # Location and names of runtime files
+   # Most of these files are here: MPAS-Model/src/core_atmosphere/physics/physics_wrf/files/
+   # To get the aerosol file use: wget https://www2.mmm.ucar.edu/projects/mpas/QNWFA_QNIFA_SIGMA_MONTHLY.dat
+   runtime_mp:
+      action: link # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/runtime/
+      files:
+         - QNWFA_QNIFA_SIGMA_MONTHLY.dat
+
+   # Case specific grid files
+   casefiles:
+      action: copy # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/case/wiw_regional/
+      files:
+         - L60.txt
+         - ww.graph.info
+         - ww.graph.info.part.128
+         - ww.static.nc
+
+   # Case specific ICs
+   ics:
+      action: link # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/case/wiw_regional/20230109/ics/
+      files:
+         - GFS:2023-01-09_00
+         - GFS:2023-01-09_06
+         - GFS:2023-01-09_12
+         - GFS:2023-01-09_18
+         - GFS:2023-01-10_00
+         - GFS:2023-01-10_06
+         - GFS:2023-01-10_12
+
+  # Case specific namelists, streams, control scripts
+   namelists:
+      action: copy # link or copy
+      dir: /scratch2/BMC/wrfruc/jensen/git-local/mpas_files/case/wiw_regional/20230109/namelists/ics/
+      files:
+         - namelist.init_atmosphere
+         - streams.init_atmosphere
+         - run_init_atmosphere_model.sh
