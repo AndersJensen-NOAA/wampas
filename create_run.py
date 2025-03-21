@@ -5,10 +5,19 @@ import yaml
 import pathlib
 import datetime
 import subprocess
+import argparse
 from typing import Dict
 
+parser = argparse.ArgumentParser(description='Create MPAS ICs')
+parser.add_argument('-f','--file', help='YAML configuration file', required=True)
+args = vars(parser.parse_args())
 
-CONFIG_FILE = './config_run.yaml'
+CONFIG_FILE = args['file']
+if pathlib.Path(CONFIG_FILE).is_file():
+    print(f"Using YAML configuration file: {CONFIG_FILE}")
+else:
+    sys.exit(f"YAML configuration file: {CONFIG_FILE} does not exist... Exiting")
+
 
 def read_config(CFILE: pathlib.Path) -> Dict[str, str]:
     """
