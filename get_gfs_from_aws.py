@@ -51,7 +51,7 @@ end_date = start_date + datetime.timedelta(hours=config['data_stop_hours'])
 delta_date = datetime.timedelta(hours=config['data_frequency_hours'])
 date_string = start_date.strftime('%Y%m%d')
 
-f = open(f"data_puller_{date_string}.txt", "w")
+f = open(f"globus_file_list_{date_string}.txt", "w")
 
 savedirs = []
 # iterate over range of dates
@@ -85,7 +85,7 @@ for f in dirs_for_grib:
 fgrib.close()
 
 fglobus = open(f"globus_transfer_{date_string}.txt", "w")
-fglobus.write(f"globus transfer $UUID_AWS_S3_PUBLIC:/ $UUID_JET_DTN:/ --batch data_puller.txt")
+fglobus.write(f"globus transfer $UUID_AWS_S3_PUBLIC:/ $UUID_JET_DTN:/ --batch globus_file_list_{date_string}.txt")
 fglobus.close()
 print("")
 print(f"GLOBUS TRANSFER COMMAND: globus transfer $UUID_AWS_S3_PUBLIC:/ $UUID_JET_DTN:/ --batch data_puller.txt")
