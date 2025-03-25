@@ -79,6 +79,7 @@ f.close()
 
 fgrib = open(f"link_grib_command_args_{date_string}.txt", "w")
 dirs_for_grib = list(set(savedirs))
+fgrib.write(f"./link_grib.csh ")
 for f in dirs_for_grib:
     fgrib.write(f"{str(f)}/* ")
 fgrib.close()
