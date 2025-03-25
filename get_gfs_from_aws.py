@@ -49,8 +49,9 @@ if config['verbose']: print(config)
 start_date = datetime.datetime.strptime(config['data_init'], '%Y-%m-%d_%H:%M:%S')
 end_date = start_date + datetime.timedelta(hours=config['data_stop_hours'])
 delta_date = datetime.timedelta(hours=config['data_frequency_hours'])
+date_string = start_date.strftime('%Y%m%d')
 
-f = open("data_puller.txt", "w")
+f = open(f"data_puller_{date_string}.txt", "w")
 
 savedirs = []
 # iterate over range of dates
@@ -74,13 +75,15 @@ while (start_date <= end_date):
     
 f.close()    
 
-fgrib = open("link_grib_command_args.txt", "w")
+
+
+fgrib = open(f"link_grib_command_args_{date_string}.txt", "w")
 dirs_for_grib = list(set(savedirs))
 for f in dirs_for_grib:
     fgrib.write(f"{str(f)}/* ")
 fgrib.close()
 
-fglobus = open("globus_transfer.txt", "w")
+fglobus = open(f"globus_transfer_{date_string}.txt", "w")
 fglobus.write(f"globus transfer $UUID_AWS_S3_PUBLIC:/ $UUID_JET_DTN:/ --batch data_puller.txt")
 fglobus.close()
 print("")
